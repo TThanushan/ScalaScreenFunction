@@ -39,7 +39,18 @@ object CaptureScreenshot extends App {
         def getGreen() = (c >> 8) & 0xFF
 
         def getBlue() = c & 0xFF
+
+        def getHSV(outputArray: Array[Float] = Array.ofDim[Float](3)): Array[Float] = {
+            require(outputArray.length == 3)
+            AwtColor.RGBtoHSB(getRed(), getBlue(), getGreen(), outputArray)
+        }
     }
+
+    val hsvValues = Array.ofDim[Float](3)
+
+    c2.getHSV(hsvValues)
+
+    hsvValues(1)
 
     implicit class ExtendedBufferedImage(val bufferedImage: BufferedImage) extends AnyVal {
         def getColor(x: Int, y: Int): Color = wrapColor(bufferedImage.getRGB(x, y))
