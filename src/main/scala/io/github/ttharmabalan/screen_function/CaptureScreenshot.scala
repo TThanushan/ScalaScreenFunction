@@ -56,9 +56,9 @@ object CaptureScreenshot extends App {
 
     val iRobot = new Robot
 
-    val rect = new Rectangle(0, 0, 1920, 1080)
+    val blueRect = new Rectangle(0, 0, 1920, 1080)
 
-    val screenshot : BufferedImage= iRobot.createScreenCapture(rect)
+    val screenshot : BufferedImage= iRobot.createScreenCapture(blueRect)
     //    ImageIO.write(screenshot, "jpg", new File("ScreenshotWithScala2.jpg"))
 
 
