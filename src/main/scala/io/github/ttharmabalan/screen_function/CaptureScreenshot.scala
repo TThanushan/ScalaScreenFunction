@@ -35,18 +35,18 @@ object CaptureScreenshot extends App {
 
     class PixelFunctions
     {
-        def intToPixelPos(n: Int, width: Int = 1920, height: Int = 1080) = Array (n/height, n/width)
+        def int2PixelPos(n: Int, width: Int = 1920) : (Int, Int) = {( n%width, n/width)}
 
         def pixelSearch(left: Int, top: Int, right: Int, bottom: Int, color: Color) = {
             val robot = new Robot()
             val rect = new Rectangle(left, top, right, bottom)
             val screenCapture: BufferedImage = robot.createScreenCapture(rect)
             val capturePixels: Array[Int] = screenCapture.getRGB(0, 0, right, bottom, null, 0, 0)
-//            var foundedPixels = List[Int, Int]
+            //            var foundedPixels = List[Int, Int]
 
             for(p <- capturePixels) {
                 if(wrapColor(p) == color){
-//                    foundedPixels(0, 0) = wrapColor(
+                    //                    foundedPixels(0, 0) = wrapColor(
                 }
             }
         }
@@ -59,7 +59,7 @@ object CaptureScreenshot extends App {
     val rect = new Rectangle(0, 0, 1920, 1080)
 
     val screenshot : BufferedImage= robot.createScreenCapture(rect)
-//    ImageIO.write(screenshot, "jpg", new File("ScreenshotWithScala2.jpg"))
+    //    ImageIO.write(screenshot, "jpg", new File("ScreenshotWithScala2.jpg"))
 
 
     val allPixelCol: Array[Int] = screenshot.getRGB(0, 0, 1920, 1080, null,0, 1920)
@@ -71,30 +71,31 @@ object CaptureScreenshot extends App {
 
     //    val t: Color = 5.asInstanceOf[Color]
     //
-        val c2: Color = wrapColor(5)
+    val c2: Color = wrapColor(5)
     //
-//        val c3 = new AwtColor(allPixelCol(0))
+    //        val c3 = new AwtColor(allPixelCol(0))
 
-//    val hsvValues = Array.ofDim[Float](3)
-//
-//    c2.getHSV(hsvValues)
-//
-//    hsvValues(1)
+    //    val hsvValues = Array.ofDim[Float](3)
+    //
+    //    c2.getHSV(hsvValues)
+    //
+    //    hsvValues(1)
 
 
     val d = screenshot.getColor(5, 6)
     val col = robot.getPixelColor(333, 80)
 
-//    val e = screenshot.getColor(5,6)
-//    val e = screenshot.getColor(5,6)
+    //    val e = screenshot.getColor(5,6)
+    //    val e = screenshot.getColor(5,6)
 
 
-    println(s"R $r G $g B $b")
-//    println(allPixelCol(0))
-    println(c2)
+    //  println(s"R $r G $g B $b")
+    //    println(allPixelCol(0))
+    //  println(c2)
 
-    println(allPixelCol.size)
+    //  println(allPixelCol.size)
 
-
+    val (x,y) = new PixelFunctions().int2PixelPos(1920)
+    println(s"x: $x y: $y")
 
 }
