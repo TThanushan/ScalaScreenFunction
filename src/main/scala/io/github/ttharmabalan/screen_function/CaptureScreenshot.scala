@@ -54,11 +54,11 @@ object CaptureScreenshot extends App {
 
 
 
-    val robot = new Robot
+    val iRobot = new Robot
 
     val rect = new Rectangle(0, 0, 1920, 1080)
 
-    val screenshot : BufferedImage= robot.createScreenCapture(rect)
+    val screenshot : BufferedImage= iRobot.createScreenCapture(rect)
     //    ImageIO.write(screenshot, "jpg", new File("ScreenshotWithScala2.jpg"))
 
 
@@ -83,7 +83,7 @@ object CaptureScreenshot extends App {
 
 
     val d = screenshot.getColor(5, 6)
-    val col = robot.getPixelColor(333, 80)
+    val col = iRobot.getPixelColor(333, 80)
 
     //    val e = screenshot.getColor(5,6)
     //    val e = screenshot.getColor(5,6)
