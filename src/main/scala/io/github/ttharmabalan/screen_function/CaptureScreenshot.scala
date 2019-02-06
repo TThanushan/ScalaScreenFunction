@@ -35,6 +35,17 @@ object CaptureScreenshot extends App {
 
     class PixelFunctions
     {
+        def comparePixelColor(x: Int, y: Int, x2: Int, y2: Int): Boolean = {
+            val robot = new Robot
+            val col1 = robot.getPixelColor(x, y)
+            val col2 = robot.getPixelColor(x2, y2)
+            if (col1 == col2){
+                true
+            }
+            else {
+                false
+            }
+        }
         def int2PixelPos(n: Int, width: Int = 1920) : (Int, Int) = {( n%width, n/width)}
 
         def pixelSearch(left: Int, top: Int, right: Int, bottom: Int, color: Color) = {
@@ -46,7 +57,7 @@ object CaptureScreenshot extends App {
 
             for(p <- capturePixels) {
                 if(wrapColor(p) == color){
-                    //                    foundedPixels(0, 0) = wrapColor(
+
                 }
             }
         }
@@ -80,22 +91,16 @@ object CaptureScreenshot extends App {
     //    c2.getHSV(hsvValues)
     //
     //    hsvValues(1)
-
-
-    val d = screenshot.getColor(5, 6)
-    val col = iRobot.getPixelColor(333, 80)
-
-    //    val e = screenshot.getColor(5,6)
-    //    val e = screenshot.getColor(5,6)
-
-
-    //  println(s"R $r G $g B $b")
-    //    println(allPixelCol(0))
-    //  println(c2)
-
-    //  println(allPixelCol.size)
-
+    val pixelFunctions = new PixelFunctions
+    val col = iRobot.getPixelColor(0, 0)
     val (x,y) = new PixelFunctions().int2PixelPos(1920)
-    println(s"x: $x y: $y")
+
+    for(p <- 0 to allPixelCol.length/5 - 1){
+        val (x2, y2) = pixelFunctions.int2PixelPos(p, 1920)
+        if(pixelFunctions.comparePixelColor(x, y, x2, y2)){
+            println(s"pixel found at x : $x2 / y : $y2 col :")
+        }
+    }
+//    println(s"x: $x y: $y")
 
 }
