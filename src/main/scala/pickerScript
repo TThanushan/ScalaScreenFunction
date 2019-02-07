@@ -1,0 +1,21 @@
+    import java.awt.Robot
+    import java.awt.MouseInfo
+    import scala.annotation.tailrec
+
+    val robot = new Robot()
+
+    @tailrec
+    def pickerLoop(): Unit = {
+        val nextChar = System.in.read().toChar
+        
+        nextChar match {
+            case 'q' => ()
+            case _ =>
+                val pointerLoc = MouseInfo.getPointerInfo.getLocation
+                val color = robot.getPixelColor(pointerLoc.x, pointerLoc.y)
+                println(f"#${color.getRed()}%02x${color.getGreen()}%02x${color.getBlue()}%02x - pos: ${pointerLoc.x},${pointerLoc.y}")
+                pickerLoop()
+        }
+    }
+    
+    pickerLoop()
