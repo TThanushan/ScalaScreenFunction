@@ -64,7 +64,9 @@ object CaptureScreenshot extends App {
     {
         // Compare the color at the x and y position with the color given in parameter.
         def comparePixelColor(x: Int, y: Int, col: AwtColor, image: BufferedImage): Boolean = {
-            val col2 = image.getColor(x, y)
+            val oldCol2 = image.getColor(x, y)
+            val col2 = new AwtColor(oldCol2.getRed, oldCol2.getGreen, oldCol2.getBlue)
+
             if (col == col2){
                 true
             }
@@ -126,9 +128,10 @@ object CaptureScreenshot extends App {
     //
     //    hsvValues(1)
     val pixelFunctions = new PixelFunctions
-    val col = new AwtColor(0x0971e1)
+    val col = new AwtColor(0x000000)
 
-
+//    val col = iRobot.getPixelColor(402, 535)
+    println(col)
     val actorSystem = ActorSystem.apply(MasterActor.init(), "ActorSystem")
 
     implicit val timeout: Timeout = 3.seconds
@@ -139,28 +142,31 @@ object CaptureScreenshot extends App {
 
     val robotActor = Await.result(futureRobotActor, 25.seconds)
 
+    var foundPixels = Array(Int, Int)
+
     def blackhole[A](a: A) = ()
-    val frameTimings = for(i <- 0 until 2000) yield {
-        val blueRect = new Rectangle(0, 0, 1280, 720)
-        if(i % 100 == 0) {
+    val frameTimings = for(i <- 0 until 100) yield {
+//        val blueRect = new Rectangle(0, 0, 1280, 720)
+        val blueRect = new Rectangle(0, 0, 1920, 1080)
+        if(i % 10 == 0) {
             println(s"analyzing frame $i")
         }
 
         val start = System.currentTimeMillis()
         val futureScreenshot = robotActor ? ((ref: ActorRef[BufferedImage]) => TakeScreenshot(blueRect, ref))
-
         val screenshot = Await.result(futureScreenshot, 25.seconds)
         blackhole(screenshot)
-//        for (p <- 0 until screenshot.getWidth * screenshot.getHeight) {
-//            val (x, y) = pixelFunctions.int2PixelPos(p, screenshot.getWidth)
-//
-//            if (pixelFunctions.comparePixelColor(x, y, col, screenshot)) {
+        for (p <- 0 until screenshot.getWidth * screenshot.getHeight) {
+            val (x, y) = pixelFunctions.int2PixelPos(p, screenshot.getWidth)
+
+            if (pixelFunctions.comparePixelColor(x, y, col, screenshot)) {
+//                iRobot.mouseMove(x, y)
 //                println(s"pixel found at x : $x / y : $y col :")
-//            }
-//            else {
-//                //            println(s"Not the same pixel ! x : $x / y : $y ")
-//            }
-//        }
+            }
+            else {
+//                println(s"Not the same pixel ! x : $x / y : $y ")
+            }
+        }
         val end = System.currentTimeMillis()
         end - start
     }
